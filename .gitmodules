@@ -1,0 +1,6 @@
+[submodule "example"]
+	path = example
+	url = https://github.com/skglobal-jsc/Full-Stack-Serverless-with-AWS-demonstration.git
+[submodule "starter"]
+	path = starter
+	url = https://github.com/skglobal-jsc/Serverless-Stack-with-NodeJS-AWS.git
