@@ -1,6 +1,14 @@
 # Full Stack Serverless with AWS demonstration
 
-Demonstrate for [Serverless-Stack-with-NodeJS-AWS](https://github.com/skglobal-jsc/Serverless-Stack-with-NodeJS-AWS)
+Still don't know how to start from [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter), don't worry please clone this repo and start to discovery how to use the base package.
+
+```sh
+# Create a new project
+$ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/trunk/exmple your-project-name
+
+# Change into the newly created directory
+$ cd your-project-name
+```
 
 ## Demonstration Features 
 > Version 1.0
@@ -20,16 +28,17 @@ Demonstrate for [Serverless-Stack-with-NodeJS-AWS](https://github.com/skglobal-j
 |Tracing|Amazon X-Ray|||
 |Alarm|Amazon CloudWatch|||
 
-## Server Architecture
-![](../raw/example_architecture.png)
 
-## Source Structure
+## Source folders
 
-### [Backend]()
-The starter seed come from [Serverless Stack with NodeJS & AWS]() package. We added some necessary plugins and logic code. In this demo project we didn't demonstrate Database implementation because we think it's too much for the demo.
+**_Backend_**
 
-### [Frontend]()
-We selected VueJS as frontend framework for demonstration and use amplify-js library for play with AWS service.
+Seed come from [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter) package, this your NodeJS backend with full of biz logic code described above.
 
-### [Mobile]()
-We selected Flutter as cross platform mobile framework for demonstration. Currently AWD Amplify library haven't supported for Flutter yet but we worked around with another 3rd party with some tweak = ).
+**_Frontend_**
+
+Web application using VueJS framework and amplify-js library for play with AWS service.
+
+**_Mobile_**
+
+Mobile application using cross platform Mobile framework - Flutter. Currently AWD Amplify library have not supported for Flutter yet but we worked around with another 3rd party with some tweak = ).
