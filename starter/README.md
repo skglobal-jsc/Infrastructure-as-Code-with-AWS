@@ -83,7 +83,7 @@ $ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tru
 $ cd your-service-name
 
 # Install local development dependencies:
-nam install
+npm install
 
 ```
 ## Service Configuration
