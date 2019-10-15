@@ -1,0 +1,184 @@
+service: skg-base-starter # change service name
+frameworkVersion: ">=v1.46.0 <2.0.0"
+package:
+  individually: true # Enables individual packaging for specific function.
+  excludeDevDependencies: true
+  exclude:
+    - coverage/**
+    - .circleci/**
+
+plugins:
+  - serverless-webpack
+  - serverless-scriptable-plugin
+  - serverless-appsync-plugin
+  - serverless-iam-roles-per-function
+  - serverless-plugin-aws-alerts
+  - serverless-stage-manager
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stackName: ${self:service}-${self:provider.stage}
+  stage: ${opt:stage, 'dev'}
+  profile: work
+  region: ${opt:region, 'us-west-2'} # Overwrite the default region used. Default is us-east-1
+  versionFunctions: false
+  memorySize: 1024 # Overwrite the default memory size. Default is 1024
+  tracing:
+    apiGateway: true
+    lambda: true
+  logs:
+    restApi: true
+    websocket: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+      Resource:
+        - "*"
+    - Effect: "Allow"
+      Action:
+        - "sns:*"
+      Resource:
+        - Ref: ApplicationTopic
+        - Fn::Join:
+            - ""
+            - - "arn:aws:sns:"
+              - !Ref "AWS::Region"
+              - ":"
+              - !Ref "AWS::AccountId"
+              - ":app/*"
+custom:
+  auth: ${file(./configs/auth.json)}
+  s3: ${file(./configs/storage.json)}
+  pinpoint: ${file(./configs/pinpoint.json)}
+  push: ${file(./configs/push.json)}
+
+  scriptHooks:
+    #   after:package:compileEvents: scripts/add-pinpoint-id.js
+    after:deploy:finalize:
+      - scripts/envSetup.js
+    remove:remove:
+      - scripts/clean.js
+  # https://www.npmjs.com/package/serverless-stage-manager
+  stages:
+    - dev
+    - prod
+  # https://github.com/ACloudGuru/serverless-plugin-aws-alerts
+  alerts:
+    stages:
+      - dev
+      - prod
+    dashboards: true
+    alarms:
+      - functionThrottles
+      - functionErrors
+      - functionInvocations
+      - functionDuration
+  serverless-offline:
+    port: 4000
+    noAuth: true
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+  appSync:
+    - name: ${self:service}-${self:provider.stage}-api
+      schema:
+        - functions/cognito/schema.graphql
+      authenticationType: AMAZON_COGNITO_USER_POOLS # API_KEY is also supported
+      userPoolConfig:
+        awsRegion: ${self:provider.region} # required # region
+        defaultAction: ALLOW
+        userPoolId:
+          Ref: CognitoUserPoolAppUserPool
+      mappingTemplatesLocation: functions/mapping-templates
+      logConfig:
+        loggingRoleArn: {Fn::GetAtt: [AppSyncLoggingServiceRole, Arn]}
+        level: ALL
+      mappingTemplates:
+        - type: Query
+          field: allGroups
+          kind: PIPELINE
+          request: cognito/Query.allGroups.request.vtl
+          response: Pipeline.common.response.vtl
+          functions:
+            - ResolverFunction
+        - type: Query
+          field: allUsers
+          kind: PIPELINE
+          request: cognito/Query.allUsers.request.vtl
+          response: Pipeline.common.response.vtl
+          functions:
+            - ResolverFunction
+        - type: User
+          field: groups
+          kind: PIPELINE
+          request: cognito/User.groups.request.vtl
+          response: Pipeline.common.response.vtl
+          functions:
+            - ResolverFunction
+        - type: Mutation
+          field: createUser
+          kind: PIPELINE
+          request: cognito/Mutation.createUser.request.vtl
+          response: Pipeline.common.response.vtl
+          functions:
+            - ResolverFunction
+        - type: Mutation
+          field: deleteUser
+          kind: PIPELINE
+          request: cognito/Mutation.deleteUser.request.vtl
+          response: Pipeline.common.response.vtl
+          functions:
+            - ResolverFunction
+      dataSources:
+        - type: AWS_LAMBDA
+          name: LambdaGraphqlResolver
+          description: "Admin only DataSource"
+          config:
+            functionName: CognitoApi
+            serviceRoleArn: {Fn::GetAtt: [AppSyncLambdaServiceRole, Arn]}
+      functionConfigurations:
+        - dataSource: LambdaGraphqlResolver
+          name: ResolverFunction
+          request: "Function.common.request.vtl"
+          response: "Function.common.response.vtl"
+functions:
+  - CognitoApi:
+      handler: functions/cognito/handler.main
+      environment:
+        USER_POOL_ID: {Ref: CognitoUserPoolAppUserPool}
+      iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - "cognito-idp:*"
+          Resource:
+            - Fn::Join:
+                - ""
+                - - "arn:aws:cognito-idp:"
+                  - Ref: "AWS::Region"
+                  - ":"
+                  - Ref: "AWS::AccountId"
+                  - ":userpool/*"
+  - ${file(functions/push/functions.yml)}
+resources:
+  # Conditions
+  - ${file(conditions.yml)}
+
+  # base IAM Roles
+  - ${file(roles/cognito-role.yml)}
+
+  # appsync-role
+  - ${file(roles/appsync-role.yml)}
+
+  # resources
+  - ${file(resources/sns.yml)}
+  - ${file(resources/auth.yml)}
+  - ${file(resources/storage.yml)}
+  - ${file(resources/pinpoint.yml)}

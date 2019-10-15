@@ -1,0 +1,17 @@
+query AllUsers($filter: FilterInput, $limit: Int, $nextToken: String) {
+  allUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      Attributes {
+        Name
+        Value
+      }
+      Username
+      groups {
+        GroupName
+        Precedence
+        UserPoolId
+      }
+    }
+    nextToken
+  }
+}

@@ -1,0 +1,256 @@
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - HEAD
+              - PUT
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - "*"
+            ExposedHeaders:
+              - x-amz-server-side-encryption
+              - x-amz-request-id
+              - x-amz-id-2
+              - ETag
+            Id: S3CORSRuleId1
+            MaxAge: "3000"
+  S3AuthPublicPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateAuthPublic
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3_public_policy_${self:provider.stage}
+      Roles:
+        - !Ref AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsAuthenticatedPublic}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - !Ref S3Bucket
+                    - "/public/*"
+  S3AuthProtectedPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateAuthProtected
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3_Protected_policy_${self:provider.stage}
+      Roles:
+        - !Ref AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsAuthenticatedProtected}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/protected/"
+                    - "$"
+                    - "{cognito-identity.amazonaws.com:sub}/*"
+  S3AuthPrivatePolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateAuthPrivate
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3_Private_policy_${self:provider.stage}
+      Roles:
+        - !Ref AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsAuthenticatedPrivate}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/private/"
+                    - "$"
+                    - "{cognito-identity.amazonaws.com:sub}/*"
+  S3AuthUploadPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateAuthUploads
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3_s3UploadsPolicy_${self:provider.stage}
+      Roles:
+        - Ref: AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsAuthenticatedUploads}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/uploads/*"
+  S3AuthReadPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: AuthReadAndList
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3ReadPolicy_${self:provider.stage}
+      Roles:
+        - Ref: AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/protected/*"
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+            Condition:
+              StringLike:
+                s3:prefix:
+                  - public/
+                  - public/*
+                  - protected/
+                  - protected/*
+                  - Fn::Join:
+                      - ""
+                      - - "private/"
+                        - "$"
+                        - "{cognito-identity.amazonaws.com:sub}/"
+                  - Fn::Join:
+                      - ""
+                      - - "private/"
+                        - "$"
+                        - "{cognito-identity.amazonaws.com:sub}/*"
+  # UnauthRole S3
+  S3GuestPublicPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateGuestPublic
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3PublicPolicy_${self:provider.stage}
+      Roles:
+        - Ref: UnauthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsGuestPublic}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/public/*"
+  S3GuestUploadPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: CreateGuestUploads
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3UploadsPolicy_${self:provider.stage}
+      Roles:
+        - Ref: UnauthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              Fn::Split:
+                - ","
+                - ${self:custom.s3.s3PermissionsGuestUploads}
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/uploads/*"
+  S3GuestReadPolicy:
+    DependsOn:
+      - S3Bucket
+    Condition: GuestReadAndList
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_s3ReadPolicy_${self:provider.stage}
+      Roles:
+        - Ref: UnauthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+                    - "/protected/*"
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: S3Bucket
+            Condition:
+              StringLike:
+                s3:prefix:
+                  - public/
+                  - public/*
+                  - protected/
+                  - protected/*
+Outputs:
+  S3BucketName:
+    Value:
+      Ref: S3Bucket
+    Description: Bucket name for the S3 bucket
+  S3Region:
+    Value:
+      Ref: AWS::Region

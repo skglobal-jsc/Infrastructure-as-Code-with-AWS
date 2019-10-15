@@ -1,0 +1,186 @@
+Resources:
+  LambdaExecutionRole:
+    Condition: ShouldCreatePinpointApp
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ${self:service}_pinpointLambdaRole_${self:provider.stage}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: ${self:service}_cloudWatchPolicyName_${self:provider.stage}
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+        - PolicyName: ${self:service}_pinpointPolicyName_${self:provider.stage}
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - mobileanalytics:*
+                  - mobiletargeting:*
+                Resource: "*"
+  PinpointFunction:
+    Type: AWS::Lambda::Function
+    Condition: ShouldCreatePinpointApp
+    Properties:
+      Code:
+        ZipFile:
+          Fn::Join:
+            - "\n"
+            - - const response = require('cfn-response');
+              - const aws = require('aws-sdk');
+              - exports.handler = function(event, context) {
+              - "    if (event.RequestType == 'Delete') {"
+              - "        response.send(event, context, response.SUCCESS);"
+              - "        return;"
+              - "    }"
+              - "    if (event.RequestType == 'Update') {"
+              - "        response.send(event, context, response.SUCCESS);"
+              - "        return;"
+              - "    }"
+              - "    if (event.RequestType == 'Create') {"
+              - "       const appName = event.ResourceProperties.appName;"
+              - "       let responseData = {};"
+              - "       const params = {"
+              - "           CreateApplicationRequest: {"
+              - "               Name: appName"
+              - "           }"
+              - "       };"
+              - "       const pinpoint = new aws.Pinpoint({ apiVersion: '2016-12-01',
+                region: event.ResourceProperties.region });"
+              - "       pinpoint.createApp(params).promise()"
+              - "           .then((res) => {"
+              - "               responseData = res.ApplicationResponse;"
+              - "               response.send(event, context, response.SUCCESS, responseData);"
+              - "           }).catch((err) => {"
+              - "               console.log(err.stack);"
+              - "               responseData = {Error: err};"
+              - "               response.send(event, context, response.FAILED, responseData);"
+              - "               throw err;"
+              - "           });"
+              - "    }"
+              - "};"
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Timeout: "300"
+      Role:
+        Fn::GetAtt:
+          - LambdaExecutionRole
+          - Arn
+  PinpointFunctionOutputs:
+    Type: Custom::LambdaCallout
+    Condition: ShouldCreatePinpointApp
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - PinpointFunction
+          - Arn
+      region:
+        Fn::FindInMap:
+          - RegionMapping
+          - Ref: AWS::Region
+          - pinpointRegion
+      appName: ${self:service}_${self:provider.stage}
+  CognitoUnauthPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_pinpoint_unauth_${self:provider.stage}
+      Roles:
+        - !Ref UnauthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - mobiletargeting:PutEvents
+              - mobiletargeting:UpdateEndpoint
+              - mobiletargeting:GetUserEndpoints
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:mobiletargeting:*:"
+                    - Fn::Select:
+                        - "4"
+                        - Fn::Split:
+                            - ":"
+                            - Fn::GetAtt:
+                                - AuthRole
+                                - Arn
+                    - ":apps/"
+                    - Fn::If:
+                        - ShouldCreatePinpointApp
+                        - Fn::GetAtt:
+                            - PinpointFunctionOutputs
+                            - Id
+                        - ${self:custom.pinpoint.appId}
+                    - "*"
+  CognitoAuthPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ${self:service}_pinpoint_auth_${self:provider.stage}
+      Roles:
+        - Ref: AuthRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - mobiletargeting:PutEvents
+              - mobiletargeting:UpdateEndpoint
+              - mobiletargeting:GetUserEndpoints
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:mobiletargeting:*:"
+                    - Fn::Select:
+                        - "4"
+                        - Fn::Split:
+                            - ":"
+                            - Fn::GetAtt:
+                                - AuthRole
+                                - Arn
+                    - ":apps/"
+                    - Fn::If:
+                        - ShouldCreatePinpointApp
+                        - Fn::GetAtt:
+                            - PinpointFunctionOutputs
+                            - Id
+                        - ${self:custom.pinpoint.appId}
+                    - "*"
+Outputs:
+  PinpointRegion:
+    Value:
+      Fn::FindInMap:
+        - RegionMapping
+        - Ref: AWS::Region
+        - pinpointRegion
+  PinpointId:
+    Value:
+      Fn::If:
+        - ShouldCreatePinpointApp
+        - Fn::GetAtt:
+            - PinpointFunctionOutputs
+            - Id
+        - ${self:custom.pinpoint.appId}
+  PinpointAppName:
+    Value:
+      Fn::If:
+        - ShouldCreatePinpointApp
+        - Fn::GetAtt:
+            - PinpointFunctionOutputs
+            - Name
+        - ${self:custom.pinpoint.appName}

@@ -1,0 +1,8 @@
+{
+  "@@last_modified": "2019-09-15T08:13:08.684571",
+  "close": "Đóng",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "aws_project_region": "us-west-2",
+  "aws_cognito_identity_pool_id": "us-west-2:50e13f5d-903e-4557-8140-24c8f047b2c9",
+  "aws_cognito_region": "us-west-2",
+  "aws_user_pools_id": "us-west-2_wtVJCnGFF",
+  "aws_user_pools_web_client_id": "2mo1qvk1ubmm71msp4h56a51jg",
+  "oauth": {
+    "domain": "skg-sample-dev.auth.us-west-2.amazoncognito.com",
+    "scope": ["phone", "email", "openid", "profile", "aws.cognito.signin.user.admin"],
+    "redirectSignIn": ["http://localhost:3000/user/signed-in/", "myapp://"],
+    "redirectSignOut": ["http://localhost:3000/", "myapp://"],
+    "responseType": "code"
+  },
+  "federationTarget": "COGNITO_USER_POOLS",
+  "aws_mobile_analytics_app_id": "d4486c17d4be49538d24a2994cc1ac65",
+  "aws_mobile_analytics_app_region": "us-west-2",
+  "aws_user_files_s3_bucket": "skg-sample-dev-s3bucket-1x09dz8to9zoo",
+  "aws_user_files_s3_bucket_region": "us-west-2",
+  "API": {"endpoints": [{"name": "PushAPI", "endpoint": "https://9qct2yqyq2.execute-api.us-west-2.amazonaws.com/dev"}]}
+}

@@ -1,0 +1,57 @@
+registerDeviceToken:
+  handler: functions/push/handler.registerDeviceToken
+  environment:
+    FCM_APP_ARN: ${self:custom.push.FCM_APP_ARN}
+    APN_APP_ARN: ${self:custom.push.APN_APP_ARN}
+    APP_TOPIC_ARN:
+      Ref: ApplicationTopic
+  events:
+    - http:
+        path: /register
+        method: post
+        cors: true
+
+sendMsg:
+  handler: functions/push/handler.sendMsg
+  environment:
+    FCM_APP_ARN: ${self:custom.push.FCM_APP_ARN}
+    APN_APP_ARN: ${self:custom.push.APN_APP_ARN}
+    APP_TOPIC_ARN:
+      Ref: ApplicationTopic
+  events:
+    - http:
+        path: /hello
+        method: post
+        cors: true
+
+vapidPublicKey:
+  handler: functions/push/webpush.vapidPublicKey
+  environment:
+    DOMAIN: MY_DOMAIN
+    VAPID_PUBLIC_KEY: MY_VAPID_PUBLIC_KEY
+    VAPID_PRIVATE_KEY: MY_VAPID_PRIVATE_KEY
+  events:
+    - http:
+        path: /web/vapidPublicKey
+        method: get
+
+registerWebpush:
+  handler: functions/push/webpush.register
+  environment:
+    DOMAIN: MY_DOMAIN
+    VAPID_PUBLIC_KEY: MY_VAPID_PUBLIC_KEY
+    VAPID_PRIVATE_KEY: MY_VAPID_PRIVATE_KEY
+  events:
+    - http:
+        path: /web/register
+        method: post
+sendNotification:
+  handler: functions/push/webpush.sendNotification
+  environment:
+    DOMAIN: MY_DOMAIN
+    VAPID_PUBLIC_KEY: MY_VAPID_PUBLIC_KEY
+    VAPID_PRIVATE_KEY: MY_VAPID_PRIVATE_KEY
+  events:
+    - http:
+        path: /web/sendNotification
+        method: post

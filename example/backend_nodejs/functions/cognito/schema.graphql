@@ -1,0 +1,68 @@
+enum SearchableAttribute {
+  username
+  email
+  name
+}
+
+enum SearchableType {
+  EXTRACTLY
+  BEGIN_WITH
+}
+
+input FilterInput {
+  Name: SearchableAttribute!
+  Type: SearchableType!
+  Value: String!
+}
+
+type AttributesType {
+  Name: String!
+  Value: String!
+}
+type User {
+  Username: ID!
+  Attributes: [AttributesType!]
+  UserCreateDate: String
+  UserLastModifiedDate: String
+  Enabled: Boolean
+  UserStatus: String
+  groups: [Group]
+}
+
+type UserConnection {
+  items: [User!]
+  nextToken: String
+}
+
+type Group {
+  GroupName: String
+  UserPoolId: String
+  Description: String
+  Precedence: Int
+  CreationDate: String
+  LastModifiedDate: String
+}
+
+type GroupConnection {
+  items: [Group!]
+  nextToken: String
+}
+
+type Query {
+  allGroups(limit: Int, nextToken: String): GroupConnection!
+  allUsers(limit: Int, nextToken: String, filter: FilterInput): UserConnection!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User @aws_auth(cognito_groups: ["Admin"])
+  deleteUser(userName: String!): User @aws_auth(cognito_groups: ["Admin"])
+}
+
+type Subscription {
+  onUpdateUser: User @aws_subscribe(mutations: ["createUser", "deleteUser"])
+}
+
+input CreateUserInput {
+  userName: String!
+  email: String!
+}

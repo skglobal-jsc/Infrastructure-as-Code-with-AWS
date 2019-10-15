@@ -1,0 +1,53 @@
+{
+  "name": "skg-base-backend",
+  "version": "1.0.0",
+  "description": "SKG base package backend",
+  "scripts": {
+    "start": "export SLS_DEBUG=* && export NODE_DEBUG=appsync-* && node ./node_modules/serverless/bin/serverless offline start",
+    "dev": "node ./node_modules/serverless/bin/serverless dynamodb install && ./node_modules/serverless/bin/serverless offline start",
+    "deploy": "export SLS_DEBUG=* && sls deploy -v"
+  },
+  "author": "Binh Bui <binhbv@gmail.com>",
+  "license": "private",
+  "private": true,
+  "dependencies": {
+    "apollo-server-lambda": "^2.7.0",
+    "aws-sdk": "2.437.0",
+    "graphql": "^14.4.2",
+    "mime-types": "^2.1.24",
+    "serverless-appsync-plugin": "^1.1.2",
+    "web-push": "^3.3.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.5.5",
+    "aws-appsync": "^1.7.2",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.3.1",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-source-map-support": "^2.0.1",
+    "dotenv": "^8.0.0",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.16.0",
+    "fs-extra": "^8.1.0",
+    "graphql-tag": "^2.10.1",
+    "jest": "^24.3.1",
+    "jest-cli": "^24.3.1",
+    "serverless": "^1.46.0",
+    "serverless-domain-manager": "^3.1.0",
+    "serverless-iam-roles-per-function": "^2.0.1",
+    "serverless-offline": "^4.8.1",
+    "serverless-plugin-aws-alerts": "^1.2.4",
+    "serverless-scriptable-plugin": "^1.0.2",
+    "serverless-stage-manager": "^1.0.5",
+    "serverless-webpack": "^5.2.0",
+    "source-map-support": "^0.5.10",
+    "supertest": "^3.4.2",
+    "webpack": "^4.29.6",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

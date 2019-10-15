@@ -1,0 +1,16 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - graphql/**
+    builders:
+      artemis:
+        options:
+          custom_parser_import: ../definitions.dart
+          schema_mapping:
+            - output: lib/services/graphql_api/allUsers_api.dart
+              schema: graphql/schema.json
+              queries_glob: graphql/allUsers.api.graphql
+            - output: lib/services/graphql_api/deleteUser_api.dart
+              schema: graphql/schema.json
+              queries_glob: graphql/deleteUser.api.graphql

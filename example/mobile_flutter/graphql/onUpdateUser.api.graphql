@@ -1,0 +1,10 @@
+subscription OnUpdateUser {
+  onUpdateUser {
+    Attributes {
+      Name
+      Value
+    }
+    Username
+  }
+}
+

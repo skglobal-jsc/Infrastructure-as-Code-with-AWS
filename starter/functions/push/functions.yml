@@ -1,0 +1,12 @@
+registerDeviceToken:
+  handler: functions/push/handler.registerDeviceToken
+  environment:
+    FCM_APP_ARN: ${self:custom.push.FCM_APP_ARN}
+    APN_APP_ARN: ${self:custom.push.APN_APP_ARN}
+    APP_TOPIC_ARN:
+      Ref: ApplicationTopic
+  events:
+    - http:
+        path: /register
+        method: post
+        cors: true

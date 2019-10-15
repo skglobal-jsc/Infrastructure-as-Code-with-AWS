@@ -1,0 +1,5 @@
+{
+  "applicationTopic": "${self:service}-${self:provider.stage}-App",
+  "FCM_APP_ARN": "MY_FCM_APP_ARN",
+  "APN_APP_ARN": "MY_APN_APP_ARN"
+}

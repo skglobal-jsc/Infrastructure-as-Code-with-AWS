@@ -1,0 +1,1 @@
+{"appId":"NONE","appName":"${self:service}_${self:provider.stage}"}

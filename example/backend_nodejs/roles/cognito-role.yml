@@ -1,0 +1,42 @@
+Resources:
+  # IAM role used for authenticated users
+  AuthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      # Define who can assume this policy
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud":
+                  Ref: IdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": authenticated
+  UnauthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action:
+              - "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                # we make the restriction that the aud of the token
+                # in our case the identity pool ID, matches our identity pool
+                "cognito-identity.amazonaws.com:aud":
+                  Ref: IdentityPool
+              # we specify that the amr of the token contains the value unauthenticated
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": unauthenticated

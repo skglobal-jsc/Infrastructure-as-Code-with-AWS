@@ -1,0 +1,6 @@
+Resources:
+  ApplicationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: ${self:custom.push.applicationTopic}
+      DisplayName: The topic for push application

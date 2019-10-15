@@ -1,0 +1,53 @@
+Resources:
+  AppSyncLoggingServiceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "CloudwatchLogging-${self:service}-Role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "appsync.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: "CloudwatchLogging-${self:service}-Policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource:
+                  - "*"
+  AppSyncLambdaServiceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "Lambda--${self:service}-Role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "appsync.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: "Lambda-${self:service}-Policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "lambda:invokeFunction"
+                Resource:
+                  - Fn::GetAtt: [CognitoApiLambdaFunction, Arn]
+                  - Fn::Join:
+                      - ":"
+                      - - Fn::GetAtt: [CognitoApiLambdaFunction, Arn]
+                        - "*"
