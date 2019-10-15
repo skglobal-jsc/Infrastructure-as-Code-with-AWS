@@ -1,56 +1,48 @@
 # Infrastructure as Code with AWS
 
-At [SK-Global](https://sk-global.biz/) we have change to work with projects using different frameworks and infrastructures, and we paid a lot of time to try building a source code Base which can help us to have quick starting for building next projects. And that's point is important to us because we have to delivery our product to the market as quick as possible and can continue work with the source code after that without refactor debt. 
+At [SK-Global](https://sk-global.biz/) we have change to work with many projects using different type of frameworks and infrastructures, and we also paid a lot a time to pay for our technical debt to refactor the source code & infrastructure when thing scaling up.
+It become our [critical topic](https://medium.com/sk-geek/adopting-the-base-sbp-at-skg-why-we-move-to-microservices-4461f984a72e) because we need delivery our product to the market as quick as possible and can continue using the source code after that.
 
-So we have [motivation](https://medium.com/sk-geek/adopting-the-base-sbp-at-skg-why-we-move-to-microservices-4461f984a72e) and decided to build our first base package with below characteristics:
+So we decided to step back and build our first source code base package with can help us have a ready and steady starting point for our next projects. Quickly the below characteristics about the source code base come to our mind
 
-_Web Service Infrastructure_
-
-* Amazon Web Service - have strong experience.
+* Amazon Web Service - why, because it is major and supply almost weapons need for project.
+* Infrastructure as Code - if you have already worked with AWS Console UI, definitely you understand configure by code is much more connivence.
 * Serverless - function as a Service, no traffic no payment.
-* Concentrate - rely on 100% AWS features without another third party services.
+* Security - let the security game be in charged by the AWS Cognito, we rely on them.
 
-_Deployment_
-
-*  Infrastructure as Code - easy to setup new project with multi environments, one click to deploy.
-*  Security - all config store in AWS System Manager.
-
-## Structure of Package
+Ok let see what we got in the package in next chapter.
 
 > This source code package is based on AWS serverless architecture so you need basic knowledge about [AWS CloudFormation](https://aws.amazon.com/cloudformation) and [Serverless framework](https://serverless.com/) for development and coding.
 
+## Structure of Package
+
+This is the basic infrastructure we think necessary for almost real life project.
+
+* Authentication & Authorization with Amazon Cognito
+* Storage with Amazon S3
+* Database with Amazon DynamoDB
+* Searching with Amazon Elastic Search
+* BizLogic with Amazon Lambda 
+* Push, Email, PubSub with Amazon SNS
+* Tracing with Amazon X-Ray
+* Watching with Amazon CloudWatch
+* CI/CD witch AWS CodeBuild
+
+![](raw/base.png)
+
+This may be too much for the starter, so we separated source code base into 3 parts like below for easier to follow.
+
 ### Starter
 
-This is a starting point for the project, it contain ready to go NodeJS backend framework with skeleton of AWS services.
-
-* Amazon Cognito
-* Amazon API Gateway
-* Amazon Lambda
-* Amazon S3
-* Amazon Appsync
-* Amazon DynamoDB
-* Amazon SNS
-* Amazon SES
-* Amazon Pinpoint
-* Amazon X-Ray
-* Amazon CloudWatch
-
-Please refer [this guide]() for step by step setup.
+This is a clean starting point for project, it contain a ready to go NodeJS with AWS environment backend. You can modify the configuration to have your desire environment easily, let start with the [Starter]().
 
 ### Example
 
-This is demonstration for basic features required for almost project which are:
+Still don't know how to start from Starter, don't worry we supply an example package which is based from the starter, implemented some basic Biz logics and contain frontend source code which can demonstrate how things work. Let deep dive with [Example]().
 
-+ Authentication
-+ GraphQL
-+ Restful API
-+ Notification
-+ Storage
-+ Analytics
-+ Alarm
-+ Trace
+### Real life project
 
-Please refer [this folder]() to deep dive into example.
+How about expand the base package to become a real life project like [this one](). Please [contact](https://sk-global.biz/) to us, we love to help with your idea.
 
 ---
-This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point to build a great product. Happy coding!
+This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Happy coding!
