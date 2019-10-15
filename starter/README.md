@@ -89,7 +89,7 @@ service: your-service-name # change service name
 ### Basic configuration
 **SNS Authentication Configuration**
 
-* Update `configs/auth.json`, for more detail of setup please refer to [example]() 
+* Update `configs/auth.json`, for more detail of setup please refer to [example](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/example) 
 
 ```
 {
@@ -154,4 +154,4 @@ After deploy successful, a config file will be created at `output/aws-exports.js
 }
 
 ```	
-That's it, for example of configuration, please refer to [example]() for more detail. Happy coding!
+That's it, for example of configuration, please refer to [example](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/example) for more detail. Happy coding!
