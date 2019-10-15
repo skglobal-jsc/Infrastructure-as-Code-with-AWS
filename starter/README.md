@@ -68,10 +68,10 @@ Now that you’ve completed your setup, let’s create and deploy a serverless S
 
 ```sh
 # Create a new Serverless service/project
-$ git clone https://github.com/skglobal-jsc/AWS-Source-Base-Package.git your-service-name
+$ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/trunk/starter your-service-name
 
 # Change into the newly created directory
-$ cd your-service-name/Base/Starter
+$ cd your-service-name
 
 # Install local development dependencies:
 nam install
