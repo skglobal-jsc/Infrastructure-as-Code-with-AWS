@@ -10,7 +10,7 @@ $ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tru
 $ cd your-project-name
 ```
 
-## Demonstration Features 
+## Demonstration features 
 > Version 1.0
 
 |Functions|Backend - NodeJS|Frontend - VueJS|Mobile - Flutter|
@@ -31,14 +31,6 @@ $ cd your-project-name
 
 ## Source folders
 
-**_Backend_**
-
-Seed come from [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter) package, this your NodeJS backend with full of biz logic code described above.
-
-**_Frontend_**
-	
-Web application using VueJS framework and amplify-js library for play with AWS service.
-
-**_Mobile_**
-
-Mobile application using cross platform Mobile framework - Flutter. Currently AWD Amplify library have not supported for Flutter yet but we worked around with another 3rd party with some tweak = ).
+* **backend_nodejs**: Server code seed from [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter) package, this your NodeJS backend with full of biz logic code described above.
+* **frontend_vuejs**: Web application using VueJS framework and amplify-js library for play with AWS service.
+* **mobile_flutter**: Mobile application using cross platform Mobile framework - Flutter. Currently AWD Amplify library have not supported for Flutter yet but we worked around with another 3rd party with some tweak = ).
