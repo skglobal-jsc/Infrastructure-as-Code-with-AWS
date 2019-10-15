@@ -76,7 +76,7 @@ Credentials are stored in INI format in `~/.aws/credentials`, which you can edit
 Now that you’ve completed your setup, let’s create and deploy a serverless Service with follow commands.
 
 ```sh
-# Create a new Serverless service/project
+# Create a new project
 $ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/trunk/starter your-service-name
 
 # Change into the newly created directory
