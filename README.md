@@ -34,15 +34,15 @@ This may be too much for the starter, so we separated source code base into 3 pa
 
 ### Starter
 
-This is a clean starting point for project, it contain a ready to go NodeJS with AWS environment backend. You can modify the configuration to have your desire environment easily, let start with the [Starter]().
+This is a clean starting point for project, it contain a ready to go NodeJS with AWS environment backend. You can modify the configuration to have your desire environment easily, let start with the [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter).
 
 ### Example
 
-Still don't know how to start from Starter, don't worry we supply an example package which is based from the starter, implemented some basic Biz logics and contain frontend source code which can demonstrate how things work. Let deep dive with [Example]().
+Still don't know how to start from Starter, don't worry we supply an example package which is based from the starter, implemented some basic Biz logics and contain frontend source code which can demonstrate how things work. Let deep dive with [Example](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/example).
 
 ### Real life project
 
-How about expand the base package to become a real life project like [this one](). Please [contact](https://sk-global.biz/) to us, we love to help with your idea.
+How about expand the base package to become a real life project like [this one](https://hamaso.sk-global.io). Please [contact](https://sk-global.biz/) to us, we love to help with your idea.
 
 ---
 This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Happy coding!
