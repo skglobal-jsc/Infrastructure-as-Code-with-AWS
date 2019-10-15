@@ -31,14 +31,14 @@ $ cd your-project-name
 
 ## Source folders
 
-**_Backend_**
+**Backend**
 
 Seed come from [Starter](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/starter) package, this your NodeJS backend with full of biz logic code described above.
 
-**_Frontend_**
+**Frontend**
 
 Web application using VueJS framework and amplify-js library for play with AWS service.
 
-**_Mobile_**
+**Mobile**
 
 Mobile application using cross platform Mobile framework - Flutter. Currently AWD Amplify library have not supported for Flutter yet but we worked around with another 3rd party with some tweak = ).
