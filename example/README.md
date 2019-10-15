@@ -10,7 +10,7 @@ $ svn export https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tru
 $ cd your-project-name
 ```
 
-## Demonstration Features 
+## Demonstration features 
 > Version 1.0
 
 |Functions|Backend - NodeJS|Frontend - VueJS|Mobile - Flutter|
