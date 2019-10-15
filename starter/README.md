@@ -1,6 +1,15 @@
 # Serverless Stack with NodeJS & AWS
 This is a starting point for the project, it contain ready to go NodeJS backend framework with skeleton of AWS services.
 
+* Amazon Cognito
+* Amazon S3
+* Amazon API Gateway
+* Amazon Lambda
+* Amazon SNS, SES
+* AWS Appsync
+* Amazon Pinpoint
+* Amazon X-Ray
+* Amazon CloudWatch
 
 ## Prerequisites
 There are a few prerequisites you need to install and configure:
