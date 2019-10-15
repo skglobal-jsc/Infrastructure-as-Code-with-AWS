@@ -42,7 +42,7 @@ Still don't know how to start from Starter, don't worry we supply an example pac
 
 ### Real life project
 
-How about expand the base package to become a real life project like [this one](https://hamaso.sk-global.io). Please [contact](https://sk-global.biz/) to us, we love to help with your idea.
+How about expand the base package to become a real life project like [this one](https://hamaso.sk-global.io). Please [contact](mailto:info@sk-global.biz?subject=IaC-with-AWS%20with%20advance%20require) to us, we love to help with your idea.
 
 ---
 This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Happy coding!
