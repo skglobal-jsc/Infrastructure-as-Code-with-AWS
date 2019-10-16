@@ -18,7 +18,7 @@ There are a few prerequisites you need to install and configure:
 * [Installing the Serverless Framework](#p2)
 * [Configuring your AWS Account with the `aws-cli`](#p3)
 
-If you already have these prerequisites setup you can skip ahead to [deploy the package](#s2).
+If you already have these prerequisites setup you can skip ahead to [create new Service](#s2) step.
 
 ### Install Node.js and NPM<a name="p1"></a>
 
@@ -71,7 +71,7 @@ Default output format [None]: ENTER
 
 Credentials are stored in INI format in `~/.aws/credentials`, which you can edit directly if needed. You can change the path to the credentials file via the `AWS_SHARED_CREDENTIALS_FILE` environment variable. Read more about that file in the [AWS documentation](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-config-files)
 
-## Create new Service
+## Create new Service<a name="s2"></a>
 
 Now that you’ve completed your setup, let’s create and deploy a serverless Service with follow commands.
 

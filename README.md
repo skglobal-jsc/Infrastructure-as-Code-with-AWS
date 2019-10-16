@@ -28,7 +28,7 @@ This is the basic infrastructure we think necessary for almost real life project
 * Watching with Amazon CloudWatch
 * CI/CD witch AWS CodeBuild
 
-![](raw/base.png)
+![base](raw/base.png)
 
 This may be too much for the starter, so we separated source code base into 3 parts like below for easier to follow.
 
