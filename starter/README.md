@@ -161,6 +161,7 @@ After deploy successful, a config file will be created at `output/aws-exports.js
   IdentityPoolName: 'IdentityPool_oS2xgGboYq44',
   ServiceEndpoint: 'https://i0nbmgnrmb.execute-api.us-west-2.amazonaws.com/dev'
 }
+```
 
 ---
 This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Please feel free to [contact to us](mailto:info@sk-global.biz?subject=IaC-with-AWS%20with%20advance%20require) for more supporting. Happy coding!
