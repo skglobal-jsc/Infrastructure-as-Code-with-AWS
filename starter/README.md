@@ -162,5 +162,5 @@ After deploy successful, a config file will be created at `output/aws-exports.js
   ServiceEndpoint: 'https://i0nbmgnrmb.execute-api.us-west-2.amazonaws.com/dev'
 }
 
-```	
-That's it, for example of configuration, please refer to [example](https://github.com/skglobal-jsc/Infrastructure-as-Code-with-AWS/tree/master/example) for more detail. Happy coding!
+---
+This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Please feel free to [contact to us](mailto:info@sk-global.biz?subject=IaC-with-AWS%20with%20advance%20require) for more supporting. Happy coding!

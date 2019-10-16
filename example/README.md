@@ -4,6 +4,18 @@ Still don't know how to start from [Starter](https://github.com/skglobal-jsc/Inf
 
 ## Demonstration features
 
+This is simple application which below fundamental functions below:
+
+* Login/Logout by account or SNS
+* See list of User
+* Update profile
+* Say hello to others
+* Delete member (admin role only)
+* Tracking Analytics event
+
+![e1](../raw/example_1.png)
+![e2](../raw/example_2.png)
+
 |Functions|Backend - NodeJS|Frontend - VueJS|Mobile - Flutter|
 |:--|:-:|:-:|:-:|
 |Sign In with Account, SNS|Amazon Cognito|amplify-js|amazon-cognito-identity-dart|
@@ -18,11 +30,6 @@ Still don't know how to start from [Starter](https://github.com/skglobal-jsc/Inf
 |Analytic|Amazon Pinpoint|||
 |Tracing|Amazon X-Ray|||
 |Alarm|Amazon CloudWatch|||
-
-This is simple application which User can login to see list of member, change profile info and send hello message to another member.
-
-![e1](../raw/example_1.png)
-![e2](../raw/example_2.png)
 
 ## backend_nodejs
 
@@ -150,3 +157,6 @@ Again, please use information in `aws-exports.js` file get from server to replac
 # Run mobile_flutter
 flutter run
 ```
+
+---
+This package base is a fully open source project, and we welcome contributions. We hope this package can be a good starting point for you to build a great next project. Please feel free to [contact to us](mailto:info@sk-global.biz?subject=IaC-with-AWS%20with%20advance%20require) for more supporting. Happy coding!
